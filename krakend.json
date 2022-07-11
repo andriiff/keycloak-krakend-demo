@@ -1,0 +1,86 @@
+{
+    "version": 3,
+    "endpoints": [
+        {
+            "endpoint": "/private",
+            "method": "GET",
+            "input_headers": "*",
+            "extra_config": {
+                "auth/validator": {
+                    "alg": "RS256",
+                    "jwk_url": "http://keycloak:8080/realms/master/protocol/openid-connect/certs",
+                    "disable_jwk_security": true,
+                    "roles_key": "realm_access.roles",
+                    "roles_key_is_nested": true,
+                    "roles": [
+                        "test-role"
+                    ],
+                    "propagate_claims": [
+                        [
+                            "preferred_username",
+                            "x-user"
+                        ]
+                    ]
+                }
+            },
+            "backend": [
+                {
+                    "host": [
+                        "api:1111"
+                    ],
+                    "url_pattern": "/private"
+                }
+            ]
+        },
+        {
+            "endpoint": "/private",
+            "method": "POST",
+            "input_headers": "*",
+            "extra_config": {
+                "auth/validator": {
+                    "alg": "RS256",
+                    "jwk_url": "http://keycloak:8080/realms/master/protocol/openid-connect/certs",
+                    "disable_jwk_security": true,
+                    "roles_key": "realm_access.roles",
+                    "roles_key_is_nested": true,
+                    "roles": [
+                        "admin"
+                    ],
+                    "propagate_claims": [
+                        [
+                            "preferred_username",
+                            "x-user"
+                        ]
+                    ]
+                }
+            },
+            "backend": [
+                {
+                    "host": [
+                        "api:1111"
+                    ],
+                    "url_pattern": "/private"
+                }
+            ]
+        },
+        {
+            "endpoint": "/public",
+            "backend": [
+                {
+                    "host": [
+                        "api:1111"
+                    ],
+                    "url_pattern": "/public"
+                }
+            ]
+        }
+    ],
+    "extra_config": {
+        "github_com/devopsfaith/krakend-gologging": {
+            "level": "INFO",
+            "prefix": "[KRAKEND]",
+            "syslog": false,
+            "stdout": true
+        }
+    }
+}
